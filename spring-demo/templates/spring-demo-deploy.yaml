@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: spring-demo
+    labels:
+        app: spring-demo
+spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    selector:
+        matchLabels:
+            app: spring-demo
+    template:
+        metadata:
+            labels:
+                app: spring-demo
+        spec:
+            containers:
+            - name: spring-demo
+              image: spring-demo
+              imagePullPolicy: "IfNotPresent"
+              ports:
+              - name: spring-demo
+                containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: spring-demo
+    labels:
+        app: spring-demo
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 8080
+      targetPort: 8080
+      name: tcp-spring-demo
+      protocol: TCP
+    selector:
+        app: spring-demo

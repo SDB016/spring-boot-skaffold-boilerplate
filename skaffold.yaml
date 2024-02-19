@@ -1,0 +1,18 @@
+apiVersion: skaffold/v4beta9
+kind: Config
+metadata:
+  name: spring-demo
+build:
+  artifacts:
+    - image: spring-demo
+      context: src/spring-demo
+      jib:
+        type: gradle
+deploy:
+  helm:
+    releases:
+      - name: spring-demo
+        chartPath: spring-demo
+        createNamespace: true
+        namespace: spring-demo
+  statusCheckDeadlineSeconds: 2000
